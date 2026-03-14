@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass System - Smart Bus Booking</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .hero {
+            text-align: center;
+            max-width: 800px;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 4rem;
+        }
+        .feature-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+        .feature-card h3 {
+            color: var(--accent-1);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Bus Pass System</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+            </ul>
+        </nav>
+        <div>
+            <a href="login.html" class="btn-primary" style="background: transparent; border: 1px solid var(--accent-1); color: var(--accent-1); margin-right: 1rem;">Log In</a>
+            <a href="register.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Commute Smarter, Not Harder</h1>
+            <p>Cloud-based ticketing to eliminate lost passes, stop ticket theft, and lock in correct pricing. Join the future of transit booking today.</p>
+            <a href="register.html" class="btn-primary" style="font-size: 1.25rem; padding: 1rem 2rem;">Get Started Now</a>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>Cloud-Based Security</h3>
+                <p>Never lose a ticket again. All your passes are securely stored against your identity in our scalable cloud database.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Prevent Theft</h3>
+                <p>Your bus pass is linked generated as a unique, non-transferable QR code associated with your secure account.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Price Integrity</h3>
+                <p>Advanced algorithmic pricing prevents overcharging and guarantees correct rates on daily, weekly, and monthly passes.</p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

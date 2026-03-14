@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass System - Book Pass</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="dashboard.html" class="logo">Bus Pass System</a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="book.html" style="color: var(--accent-1);">Book Pass</a></li>
+            </ul>
+        </nav>
+        <div>
+            <span id="user-display" style="margin-right: 1.5rem; font-weight: 500;"></span>
+            <button onclick="logout()" class="btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);">Log Out</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="form-container">
+            <div class="section-header">
+                <h2>Select Pass Type</h2>
+                <p style="color: var(--text-muted);">Choose the pass that fits your commute.</p>
+            </div>
+            
+            <form id="book-form">
+                <div class="form-group">
+                    <label for="passType">Pass Type</label>
+                    <select id="passType" required style="cursor: pointer; background: rgba(13, 15, 25, 0.9);">
+                        <option value="Daily">Daily Pass - ₹50.00</option>
+                        <option value="Weekly">Weekly Pass - ₹300.00</option>
+                        <option value="Monthly">Monthly Pass - ₹1000.00</option>
+                    </select>
+                </div>
+                
+                <div style="background: rgba(56, 189, 248, 0.1); border: 1px dashed var(--accent-1); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <span style="font-size: 1.25rem;">🔒</span>
+                    <p style="color: var(--text-main); line-height: 1.4;">
+                        Your pass will be securely linked to your account. Prices are strictly enforced by our backend to prevent tampering.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1rem;">Confirm Purchase</button>
+                </div>
+                <div style="text-align: center;">
+                    <a href="dashboard.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+    <script src="js/api.js"></script>
+    <script>
+        checkAuthDialog();
+        
+        document.getElementById('user-display').textContent = 'Hello, ' + localStorage.getItem('buspass_user');
+        
+        document.getElementById('book-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const pt = document.getElementById('passType').value;
+            // Fake payment process overlay
+            const btn = this.querySelector('button');
+            btn.innerHTML = `<span style="animation: pulse 1s infinite;">Processing Secure Payment...</span>`;
+            btn.style.pointerEvents = 'none';
+            btn.style.opacity = '0.7';
+            
+            // Simulate 1.5s network payment call
+            setTimeout(() => {
+                bookPass(pt);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

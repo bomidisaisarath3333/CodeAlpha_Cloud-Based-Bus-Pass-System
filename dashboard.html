@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass System - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="dashboard.html" class="logo">Bus Pass System</a>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="book.html">Book Pass</a></li>
+            </ul>
+        </nav>
+        <div>
+            <span id="user-display" style="margin-right: 1.5rem; font-weight: 500;"></span>
+            <button onclick="logout()" class="btn-primary" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main);">Log Out</button>
+        </div>
+    </header>
+
+    <main>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h2>Your Passes</h2>
+                <a href="book.html" class="btn-primary">+ New Pass</a>
+            </div>
+            
+            <div id="passes-container" class="passes-grid">
+                <!-- Passes will go here -->
+                <p style="color: var(--text-muted);">Loading your passes...</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast-container"></div>
+    <script src="js/api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        checkAuthDialog();
+        
+        document.getElementById('user-display').textContent = 'Hello, ' + localStorage.getItem('buspass_user');
+        
+        async function loadPasses() {
+            const container = document.getElementById('passes-container');
+            const passes = await fetchPasses();
+            
+            if (passes.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem 0;">
+                        <span style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.5;">🚌</span>
+                        <p style="color: var(--text-muted); font-size: 1.2rem;">You don't have any passes yet.</p>
+                        <br>
+                        <a href="book.html" class="btn-primary">Book your first pass</a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = '';
+            passes.forEach(p => {
+                const statusClass = p.status === 'Active' ? 'status-active' : 'status-expired';
+                const card = document.createElement('div');
+                card.className = 'pass-card';
+                card.innerHTML = `
+                    <div class="pass-header">
+                        <span class="pass-type">${p.pass_type} Pass</span>
+                        <span class="pass-status ${statusClass}">${p.status}</span>
+                    </div>
+                    <div class="pass-details">
+                        <div class="pass-detail-row">
+                            <span class="pass-detail-label">Pass ID</span>
+                            <span style="font-family: monospace; font-size: 0.8rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">${p.pass_id.substring(0,8).toUpperCase()}</span>
+                        </div>
+                        <div class="pass-detail-row">
+                            <span class="pass-detail-label">Price Paid</span>
+                            <span>₹${p.price.toFixed(2)}</span>
+                        </div>
+                        <div class="pass-detail-row">
+                            <span class="pass-detail-label">Valid Until</span>
+                            <span style="font-weight: 500;">${formatDatetime(p.valid_until)}</span>
+                        </div>
+                    </div>
+                    ${p.status === 'Active' ? `<div class="pass-qr-placeholder" id="qr-${p.pass_id}"></div>` : ''}
+                `;
+                container.appendChild(card);
+                
+                if (p.status === 'Active') {
+                    // Generate actual QR Code
+                    new QRCode(document.getElementById(`qr-${p.pass_id}`), {
+                        text: p.pass_id,
+                        width: 100,
+                        height: 100,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
+            });
+        }
+        
+        loadPasses();
+    </script>
+</body>
+</html>
